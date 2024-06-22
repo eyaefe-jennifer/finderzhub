@@ -26,7 +26,7 @@ const prevSlide =()=>{
 const nextSlide =()=>{
      setCurrentSlide(currentSlide === 3 ? 0:(prev) => prev +1)
 }
-console.log(currentSlide)
+// console.log(currentSlide)
   return (
     <div className="w-full h-auto overflow-x-hidden">
         <div className=" w-screen h-[650px] relative  ">

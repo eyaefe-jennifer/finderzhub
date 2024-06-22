@@ -6,10 +6,11 @@ const useCartStore = create((set) => ({
   totalItems: 0,
   add: ({ product, quantity }) =>
     set((state) => {
+      console.log(state);
       const existingProductIndex = state.cart.findIndex(
         (item) => item._id === product._id
       );
-      
+
       const newQuantity = parseInt(quantity, 10);
 
       if (newQuantity <= 0) {
@@ -71,4 +72,3 @@ function calculateTotalItems(cart) {
 }
 
 export default useCartStore;
-
