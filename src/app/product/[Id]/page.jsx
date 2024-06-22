@@ -5,19 +5,39 @@ import { usePathname } from "next/navigation";
 import ProductDetails from "@/components/ProductDetails";
 import SkeletonEffect from "@/components/SkeletonEffect";
 import Category from "@/components/Category";
+import useCartStore from "@/stateManager/CartState";
 
 const Product = ({ params }) => {
+  const { initialData } = useCartStore((state) => ({
+    initialData: state.initialData,
+  }));
+
   const path = usePathname();
   const [productDetails, setProductDetails] = useState();
   // const [categoryList, setCategoryList] = useState();
   const [loading, setLoading] = useState(true);
+  const [isLoadingInitial, setIsLoadingInitial] = useState(true);
   const [error, setError] = useState(null);
+
+  // useEffect(() => {
+  //   fetInitialProducts();
+  // }, [listOfProducts]);
+
+  // if (isLoadingInitial) {
+  //   console.log(listOfProducts);
+  // }
 
   useEffect(() => {
     if (params?.Id) {
       productId();
     }
   }, [params?.Id]);
+
+  // async function fetInitialProducts() {
+  //   setIsLoadingInitial(true);
+  //   await initialData();
+  //   setIsLoadingInitial(false);
+  // }
 
   const productId = async () => {
     try {

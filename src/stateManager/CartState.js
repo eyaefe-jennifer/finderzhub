@@ -1,9 +1,19 @@
+import { ProductsData } from "@/api/Api";
 import { create } from "zustand";
 
 const useCartStore = create((set) => ({
   cart: [],
+  listOfProducts: [],
   cartTotal: 0,
   totalItems: 0,
+  // this is what you should be using to get the list of products
+  initialData: () => {
+    ProductsData().then((res) => {
+      set((state) => {
+        return { listOfProducts: [...state.listOfProducts, res.data] };
+      });
+    });
+  },
   add: ({ product, quantity }) =>
     set((state) => {
       // (Dogunfx-note-- the find index method is not doing the job well, so i change it to for)
@@ -33,7 +43,7 @@ const useCartStore = create((set) => ({
       }
 
       if (existingProductIndex !== -1) {
-        // If the product already exists, update the quantity to the new quantity
+        //(dogunfx-notes) If the product already exists, update the quantity to the new quantity, but i could not find a way to use it, because your code was confusing me
         const existingProduct = state.cart[existingProductIndex];
         let updatedCart = [];
         //(dogunfx-note) get the product that was clicked on

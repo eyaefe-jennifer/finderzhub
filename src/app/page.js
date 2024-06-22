@@ -3,6 +3,7 @@ import { ProductsData } from "@/api/Api";
 import Cart from "@/components/Cart";
 import { HeroesPage } from "@/components/HeroesPage";
 import Product from "@/components/Product";
+import useCartStore from "@/stateManager/CartState";
 import { useState, useEffect } from "react";
 
 export default function Home() {
