@@ -6,10 +6,17 @@ const useCartStore = create((set) => ({
   totalItems: 0,
   add: ({ product, quantity }) =>
     set((state) => {
-      console.log(state);
-      const existingProductIndex = state.cart.findIndex(
-        (item) => item._id === product._id
-      );
+      // (Dogunfx-note-- the find index method is not doing the job well, so i change it to for)
+      let existingProductIndex = -1;
+      // state.cart.map((item, index) => item.id === product.id);
+
+      for (let index = 0; index < state.cart.length; index++) {
+        const item = state.cart[index];
+        if (item.id == product.id) {
+          existingProductIndex = index;
+          break;
+        }
+      }
 
       const newQuantity = parseInt(quantity, 10);
 
@@ -27,9 +34,25 @@ const useCartStore = create((set) => ({
 
       if (existingProductIndex !== -1) {
         // If the product already exists, update the quantity to the new quantity
-        const updatedCart = [...state.cart];
-        updatedCart[existingProductIndex].quantity = newQuantity;
+        const existingProduct = state.cart[existingProductIndex];
+        let updatedCart = [];
+        //(dogunfx-note) get the product that was clicked on
+        if (existingProduct.id == product.id) {
+          // (dogunfx-note-- adjust the products quantity)
+          existingProduct.quantity++;
+          // replace with the current product
+          updatedCart = state.cart.map((p) => {
+            if (p.id == existingProduct.id) return existingProduct;
+            return p;
+          });
+        } else {
+          updatedCart = [...state.cart, existingProduct];
+        }
 
+        // console.log(updatedCart);
+
+        // (Dogunfx-note-  Na Only God know wetin you dey use this line do before)
+        // updatedCart[existingProductIndex].quantity = newQuantity;
         return {
           cart: updatedCart,
           cartTotal: calculateCartTotal(updatedCart),
@@ -37,16 +60,12 @@ const useCartStore = create((set) => ({
         };
       } else {
         // If the product doesn't exist, add it to the cart with the new quantity
+        // (dogunfx-note -- reduce code duplication)
+        const newCart = [...state.cart, { ...product, quantity: newQuantity }];
         return {
-          cart: [...state.cart, { ...product, quantity: newQuantity }],
-          cartTotal: calculateCartTotal([
-            ...state.cart,
-            { ...product, quantity: newQuantity },
-          ]),
-          totalItems: calculateTotalItems([
-            ...state.cart,
-            { ...product, quantity: newQuantity },
-          ]),
+          cart: newCart,
+          cartTotal: calculateCartTotal(newCart),
+          totalItems: calculateTotalItems(newCart),
         };
       }
     }),
