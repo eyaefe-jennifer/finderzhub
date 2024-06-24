@@ -12,7 +12,6 @@ const ProductDetails = ({ productDetails }) => {
   }));
   const [baseQty, setBaseQty] = useState(1);
 
-  console.log("Current cart:", cart);
 
   const handleAddToCart = () => {
     add({ product: productDetails, quantity: baseQty });

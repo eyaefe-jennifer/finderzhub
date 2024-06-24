@@ -42,7 +42,11 @@ const ProductCard = ({ product }) => {
             </div>
 
             <p
-              onClick={addToCart}
+              onClick={() => {
+                //(dogunfx-notes) you were not calling the add Function properly
+                addToCart({ product: product, quantity: 1 });
+                
+              }}
               className="absolute z-20  text-gray-500 hover:text-gr flex items-center gap-1 top-0  text-sm transform -translate-x-32 group-hover:translate-x-0 transition-transform cursor-pointer duration-500"
             >
               add to Cart
